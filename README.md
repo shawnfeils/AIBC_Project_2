@@ -7,6 +7,7 @@ OSU AI Boot Camp - Project Two - Shawn Feils &amp; Chelsey Hay
 # Resources
 * Alpha Vantage API was used to retrieve stock candles (open, high, low, close, and volumes) - https://www.alphavantage.co/
 * S&P 500 Stock Data was retrieved from the S&P Global Website - https://www.spglobal.com/spdji/en/indices/equity/sp-500/#data
+* 
 
 
 
