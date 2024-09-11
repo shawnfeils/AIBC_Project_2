@@ -4,9 +4,7 @@ Project Two
 Shawn Feils &amp; Chelsey Hay
 
 # Overview
-For this project, we were tasked with using maching learning (ML) to analyze a problem. 
-
- utilized a machine learning model to determine whether the general performance of a stock could be predicted using the sentiment of a stock related to the various news articles published on the 
+For this project, we were tasked with using maching learning (ML) to analyze a problem. We focused on utilizing a machine learning model to determine whether the general performance of a stock could be predicted using the sentiment of a stock related to the various news articles published.
 
 # Research Question
 For this project, our research question was: can we use maching learning to predict the variance of a stock price using news reporting setmients?
