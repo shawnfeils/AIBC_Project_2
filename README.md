@@ -1,225 +1,106 @@
 # AIBC_Project_2
-OSU AI Boot Camp - Project Two - Shawn Feils &amp; Chelsey Hay
+OSU AI Boot Camp 
+Project Two
+Shawn Feils &amp; Chelsey Hay
 
+# Overview
+For this project, we were tasked with using maching learning (ML) to analyze a problem. 
 
+ utilized a machine learning model to determine whether the general performance of a stock could be predicted using the sentiment of a stock related to the various news articles published on the 
 
+# Research Question
+For this project, our research question was: can we use maching learning to predict the variance of a stock price using news reporting setmients?
+* A strong hypothesis is that the model will allow us to predict the magnitude and direction of variance based on sentiment (regression)
+* A weak hypothesis is that the model will allow us to predict the direction of variance based on sentiment (classification)
+
+# Approach
+We have broken out our approach into Data Retrieval and Cleanup and the analysis can be found below in the "Results" section.
+### Data Retrieval
+We utilized Alpha Vantage and the S&P 500 to retrieve the data that was needed for this exercise.
+
+*Alpha Vantage*
+* We accessed Alpha Vantage using an API
+* Gathered historical daily closing prices on stocks within the S&P 500
+* Gathered all news articles published for the stocks in 2023 (some stocks did not have data)
+* Retrieved relevance scores for every stock listed in the news articles & exported into CSV files for each stock
+* Retrieved sentiment scores for every stock listed in the article & exported into CSV files for each stock
+
+*S&P 500*
+* Accessed the S&P 500 to download a CSV with all S&P 500 stock ticker information
+### Data Clean Up 
+*Stocks*
+* Exported all data into CSV individual files
+* Created a data frame
+* Added a percent change from prior day and prior week for historical stock prices
+* Grouped each stock by time period (pre-market, intra-day, after-market)
+* Created a pivot to combine the time period data into one data frame
+
+![Stock Price Data CSV](image.png)
+
+*News Articles*
+* Exported all data into individual files
+* Reduced the news article data to focus on just the stock we were analyzing (some articles reference multiple stocks)
+* Created a data frame
+* Created a relevance weighted sentiment score for the articles
+* Added zeros (0) for stocks that did not have news data for that day to ensure all days remained in the analysis
+* Combined the stock & news article files
+![News Article CSV](image-1.png)
+
+# Results
+We ran twelve (12) models with varying approaches to get to an end performance score of 0.742 in our testing in MOdel 10.
+### Methodology
+* Random Forest Regression – modeling the strong hypothesis
+* Random Forest Classifier – modeling the weak hypothesis
+### Models
+We ran 12 models: 3 models focused on our strong hypothesis and 9 models focused on our weak hypothesis.
+
+![All models](image-2.png)
+
+### Model Performance
+* On the regression model, performance degrades as Weekly Price Change and Volume are removed.
+* The same is not true (or as strongly true) on the classification model.
+![MP1](image-3.png)
+
+* Volume, as utilized in this model, is problematic and drives overfitting. 
+![MP2](image-4.png)
+
+* Binary binning (UP/DOWN) classifies more successfully than a 4-bin approach (DOWN+/DOWN/UP/UP+). 
+![MP3](image-5.png)
+
+* Label encoding was a mistake (the values are categorical not ordinal), and One-Hot encoding improves the model, even while removing the Weekly Price Change.
+![MP4](image-6.png)
+
+* Relevance Weighted Sentiment Scores alone are more valuable in the model than both scores.
+![MP5](image-7.png)
+
+* Sector and Industry, combined, are relevant to the model.
+![MP6](image-8.png)
+
+* Model 10 produced the best results on the testing score (0.742) with the lowest amount of overfitting on the training data (0.958):
+![MP7](image-9.png)
+
+# Requirements
+* We created an analysis of existing data to make a prediction, classification, or regression.
+* The datasets we retrieved had tens of thousands of records across all of the results once combined
+* We utilized many aspects of our bootcamp learnings, including:
+    * Scikit- learn
+    * Python
+    * Pandas
+    * API Requests
+* Created a Jupyter notebook that thoroughly describes the data extraction, cleaning, and transformation process, and the cleaned data is exported as CSV files for the machine learning model
+* A Python script initializes, trains, and evaluates a model or loads a pretrained model
+* The model optimization and evaluation process showing iterative changes made to the model and the resulting changes in model performance is documented in either a CSV table or in the Python script itself (across 12 models!)
+* Overall model performance is printed or displayed at the end of the script
+* GitHub repository is free of unnecessary files and folders and has an appropriate .gitignore in use
+* The README is customized as a polished presentation of the content of the project
+* Our pr3esentation contained an executive summary, overview of our approach, the results, and was visually appealing
+
+# Future Considerations
+There are a few questions that we did not cover in this project that can be incorporated for future consideration:
+* Volume and prior period price changes are relevant – can prior day/week volume and prior week (excluding current day) price changes be incorporated?
+* The model didn’t include specific stocks – can tickers be included to identify company/media relationships that are unique (i.e. Apple, Microsoft, Facebook, Amazon, Tesla, etc.)?
+* We did not run the 4-bin models with any variation in the bin ranges – is there an opportunity to optimize the bin range and achieve similar model performance to the binary bin models while gaining higher fidelity in the price change prediction? 
 
 # Resources
-* Alpha Vantage API was used to retrieve stock candles (open, high, low, close, and volumes) - https://www.alphavantage.co/
+* Alpha Vantage API was used to retrieve stock candles (open, high, low, close, and volumes), stock sentiment data, and news related to each stock - https://www.alphavantage.co/
 * S&P 500 Stock Data was retrieved from the S&P Global Website - https://www.spglobal.com/spdji/en/indices/equity/sp-500/#data
-* 
-
-
-
-For Project 2, you will work with your group to solve, analyze, or visualize a problem using machine learning (ML), along with the other technologies you’ve learned so far. Here are the specific requirements:
-
-Find a problem worth solving, analyzing, or visualizing.
-The dataset(s) for your project must have at least 500 records. (If developing a decision tree/random forest model, you should use at least 1,000 records.)
-Use either a supervised or unsupervised ML model to solve, analyze, or visualize the problem.
-Evaluate the trained model(s) using testing data. Include any calculations, metrics, or visualizations needed to evaluate the performance.
-You must use Scikit-learn.
-You must use at least three of the following:
-API requests
-Matplotlib
-Pandas
-Pandas plotting
-Prophet
-Python
-Time series analysis
-For this project, you can focus your efforts within a specific industry, as detailed in the following examples.
-
-Finance
-Create an algorithm that analyzes credit scores and predicts consumer personal-loan eligibility.
-
-Train an algorithm to analyze consumer spending and predict trends.
-
-Train an image classifier to assess property value, which could then be used to calculate insurance quotes.
-
-Healthcare
-Train an algorithm to recognize disease symptoms and predict if a patient is at risk.
-
-Train an image classifier to recognize anomalies, such as suspicious vs healthy areas of skin.
-
-Create an algorithm to analyze patient history and predict the likelihood of inherited illness.
-
-Custom
-We’ve only specified healthcare and finance, but any industry can benefit from machine learning. Consider preparing a data deep dive or infrastructure review that shows machine learning in the context of what we’ve already learned.
-
-Create a front-end interface that maps to an API to “smarten” the algorithm.
-
-Perform a deep dive on existing data using machine learning.
-
-Create a visualization that continues to learn where clusters lie based on ML (use Leaflet or Plotly to change the visualization).
-
-Create an idea using mock data, and simulate how machine learning might be used.
-
-Create an analysis of existing data to make a prediction, classification, or regression.
-
-Working with Your Group
-When working on an online group project, it’s crucial to meet with your group and communicate regularly. Plan for significant collaboration time outside of class. The following tips can help you make the most of your time:
-
-Decide how you’re going to communicate with your group members when you begin. Create a Slack channel, exchange phone numbers, and ensure that the group knows each group member’s available working hours.
-
-Set up an agile project by using GitHub ProjectsLinks to an external site. so that your group can track tasks.
-
-Create internal milestones to ensure that your group is on track. Set due dates for these milestones so that you have a timeline for completing the project. Some of these milestones might include:
-
-Project ideation;
-
-Data fetching;
-
-Data exploration;
-
-Data transformation;
-
-Data analysis;
-
-Testing;
-
-Creating documentation; and
-
-Creating the presentation.
-
-Since this is a two-week project, make sure that you have completed at least half of your project by the end of the first week in order to stay on track.
-
-Although you will divide the work among the group members, it’s essential to collaborate and communicate while working on different parts of the project. Be sure to check in with your teammates regularly and offer support.
-
-Support and Resources
-Your instructional team will provide support during classes and office hours. You will also have access to learning assistants and tutors to help you with topics as needed. Make sure to take advantage of these resources as you collaborate with your group on this project.
-
-Requirements
-Data Model Implementation (25 points)
-There is a Jupyter notebook that thoroughly describes the data extraction, cleaning, and transformation process, and the cleaned data is exported as CSV files for the machine learning model. (10 points)
-
-A Python script initializes, trains, and evaluates a model or loads a pretrained model. (10 points)
-
-The model demonstrates meaningful predictive power at least 75% classification accuracy or 0.80 R-squared. (5 points)
-
-Data Model Optimization (25 points)
-The model optimization and evaluation process showing iterative changes made to the model and the resulting changes in model performance is documented in either a CSV/Excel table or in the Python script itself. (15 points)
-
-Overall model performance is printed or displayed at the end of the script. (10 points)
-
-GitHub Documentation (25 points)
-GitHub repository is free of unnecessary files and folders and has an appropriate .gitignore in use. (10 points)
-
-The README is customized as a polished presentation of the content of the project. (15 points)
-
-Presentation Requirements (25 points)
-Your presentation should cover the following:
-
-An executive summary or overview of the project and project goals. (5 points)
-
-An overview of the data collection, cleanup, and exploration processes. Include a description of how you evaluated the trained model(s) using testing data. (5 points)
-
-The approach that your group took in achieving the project goals. (5 points)
-
-Any additional questions that surfaced, what your group might research next if more time was available, or share a plan for future development. (3 points)
-
-The results and conclusions of the application or analysis. (3 points)
-
-Slides effectively demonstrate the project. (2 points)
-
-Slides are visually clean and professional. (2 points)
-
-This project will be evaluated against the requirements and assigned a grade according to the following table:
-
-Grade	Points
-A (+/-)	90+
-B (+/-)	80–89
-C (+/-)	70–79
-D (+/-)	60–69
-F (+/-)	< 60
-Project Guidelines
-The following project guidelines focus on teamwork, your project proposal, data sources, and data cleanup and analysis.
-
-Collaborating with Your Team
-Remember that these projects are a group effort. The experience of close collaboration will create better project outcomes and help you in your future careers. Specifically, you’ll learn collaborative workflows that will enable you to approach and solve complex problems. Working in groups allows you to work smart and dream big. Take advantage!
-
-Project Proposal
-Before you start writing any code, your group should outline the scope and purpose of your project. This will help provide direction and safeguard against scope creep (the tendency for projects to become more complex after work begins).
-
-The proposal is essentially a brief summary of your interests and intent. Be sure to include the following details:
-
-The kind of data you’d like to work with and the field you’re interested in (finance, healthcare, etc.)
-
-The questions you’ll ask of the data
-
-A possible source for the data
-
-Use the following example for guidance:
-
-The aim of our project is to uncover patterns in credit card fraud. We’ll examine relationships between transaction types and location, purchase prices and times of day, purchase trends over the course of a year, and other related relationships derived from the data.
-
-Finding Data
-Once your group has written a proposal, it’s time to start searching for data. We recommend the following curated sources of high-quality data:
-
-UC Irvine Machine Learning RepositoryLinks to an external site.
-
-data.worldLinks to an external site.
-
-KaggleLinks to an external site.
-
-Data.govLinks to an external site.
-
-Awesome Public DatasetsLinks to an external site.
-
-important
-Whenever you use a dataset or create a new dataset based on other sources (such as existing datasets or information scraped from websites), make sure to use the following guidelines:
-
-Check for copyright protections, and make sure that the way you plan to use this dataset is within the bounds of fair use.
-
-Document how you intend to use this dataset now and in the future. Find any licenses or terms of use associated with the dataset, and review them to confirm that your intended use is in compliance.
-
-Investigate how the dataset was collected. Identify any indicators that the data was obtained from a source that the compilers were not authorized to access.
-
-You’ll likely have to adjust your project plan as you explore the available data. That’s okay! This is all part of the process. Just make sure that everyone in the group is aligned on the project’s goals as you make changes.
-
-Make sure that your datasets are not too large for your personal computer. Big datasets are difficult to manage locally, so consider using data subsets or different datasets altogether.
-
-Data Cleanup and Analysis
-Now that you’ve picked your data, it’s time to tackle development and analysis. This is where the fun starts!
-
-The analysis process can be broken into two broad phases: (1) Exploration and cleanup, and (2) analysis.
-
-As you’ve learned, you’ll need to explore, clean, and reformat your data before you can begin answering your research questions. We recommend keeping track of these exploration and cleanup steps in a dedicated Jupyter notebook to stay organized and make it easier to present your work later.
-
-After you’ve cleaned your data and are ready to start crunching numbers, you should track your work in a Jupyter notebook dedicated specifically to analysis. We recommend focusing your analysis on multiple techniques, such as aggregation, correlation, comparison, summary statistics, sentiment analysis, and time-series analysis. Don’t forget to include plots during both the exploration and analysis phases. Creating plots along the way can reveal insights and interesting trends in the data that you might not notice if you wait until you’re preparing for your presentation. Presentation requirements will be further explained in the next module.
-
-Presentation Guidelines
-This section lists the Project 2 presentation guidelines. Each group will prepare a formal, 10-minute presentation (7 minutes for the presentation followed by a 3-minute question-and-answer session) that covers the following points.
-
-An executive summary or overview of the project and project goals:
-
-Explain how the project relates to the industry you selected.
-An overview of the data collection, cleanup, and exploration processes:
-
-Describe the source of your data and why you chose it for your project.
-
-Describe the collection, exploration, and cleanup process.
-
-The approach that your group took to achieve the project goals:
-
-Include any relevant code or demonstrations of the application or analysis.
-
-Discuss any unanticipated insights or problems that arose and how you resolved them.
-
-The results/conclusions of the application or analysis:
-
-Include relevant images or examples to support your work.
-
-If the project goal was not achieved, discuss the issues and how you attempted to resolve them.
-
-Next steps:
-
-Briefly discuss potential next steps for the project.
-It’s crucial that you find time to rehearse before presentation day.
-
-On the day of your presentation, each member of your group is required to submit the URL of your GitHub repository for grading.
-
-Presentation Day
-Your group will have a total of 10 minutes—7 minutes for the presentation followed by a 3-minute question-and-answer session. It’s crucial that you find time to rehearse before presentation day.
-
-On the day of your presentation, each member of your group is required to submit the URL of your GitHub repository for grading.
-
-note
